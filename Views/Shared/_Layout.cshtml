@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <header>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
+            </div>
+            <div class="float-right">
+                <section id="login">
+                    @Html.Partial("_LoginPartial")
+                </section>
+                <nav>
+                    <ul id="menu">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            <div id="shell">
+                @RenderBody()
+            </div>
+        </section>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+            </div>
+        </div>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/sammy-0.7.4.js"></script>
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        function InjectContentToShell(content) {
+            $('#shell').fadeOut(50, function () {
+                $(this).empty().append(content);
+            }).fadeIn(30);
+        }
+
+
+        $(document).ready(function () {
+
+            var app = $.sammy('#shell', function () {
+                var content = null;
+
+                function partial(options, context) {
+                    var cxt = context;
+
+                    if (options) {
+
+                        $.ajax({
+                            url: options.url,
+                            type: options.type || 'GET',
+                            dataType: options.datatype || 'html',
+                            async: true,
+                            data: options.dataToPost,
+                            beforeSend: function () {
+                                $("#loaderMain").show();
+                            },
+                            complete: function () {
+                                $("#loaderMain").hide();
+                            },
+                            cache: false
+                        }).success(function (response, status, xhr) {
+                            var ct = xhr.getResponseHeader("content-type") || "";
+                            if (ct.indexOf('html') > -1) {
+                                // returned result is of type html, so act accordingly
+                                if (options.selector == undefined) {
+                                    if (response != null) {
+                                        if (options.redirectRoute != undefined) {
+                                            content = response;
+                                            cxt.redirect(options.redirectRoute);
+                                        } else {
+                                            InjectContentToShell(response);
+                                        }
+                                    }
+                                } else {
+                                    $(options.selector).empty().append(response);
+                                }
+                            } else if (ct.indexOf('json') > -1) {
+                                // returned result is of type json, so act accordingly
+                            }
+                        }).fail(function (e) {
+                            console.log(e);
+                        });
+                    }
+                }
+
+                this.get('#/', function (context) {
+                    var options = {
+                        url: '/Account/Login',
+                        type: 'GET',
+                    };
+
+                    partial(options, context);
+                });
+
+                this.get('#/home', function (context) {
+                    if (content == null) {
+                        var options = {
+                            url: '/Home/Index',
+                            type: 'GET'
+                        };
+                        partial(options, context);
+                    } else {
+                        InjectContentToShell(content);
+                        content = null;
+                    }
+                });
+
+                this.post('#/login', function (context) {
+                    var options = {
+                        url: '/Account/Login',
+                        type: 'POST',
+                        dataToPost: $('#loginform').serialize(),
+                        redirectRoute: '#/home'
+                    };
+
+                    partial(options, context);
+                });
+
+                this.post('#/summaryview', function (context) {
+
+                    var summaryViewReference = this.params['Reference'],
+                         formId = summaryViewReference.replace('/', ''),
+                         //detailsViewReference = instance.find('#DetailViewId').val(),
+                         layoutWidth = this.params['Width'],
+                         layoutHeight = this.params['Height'],
+                         detailViewId = this.params['DetailViewId'].replace('/', '_');
+
+                    var dataToPost = $('form#' + formId).serialize();
+
+                    var options = {
+                        url: '/Home/Details',
+                        type: "POST",
+                        dataType: "html",
+                        dataToPost: dataToPost,
+                        redirectRoute: '#/details/' + detailViewId + "/" + layoutWidth + "/" + layoutHeight
+                    };
+
+                    partial(options, context);
+
+
+                });
+
+                this.get('#/details/:reference/:width/:height', function (context) {
+                    if (content == null) {
+                        var options = {
+                            url: '/Home/Details?Reference=' + this.params['reference'].replace('_', '') + "&Width=" + this.params['width'] + "&Height=" + this.params['height'],
+                            type: 'GET'
+                        };
+
+                        partial(options, context);
+                    } else {
+                        InjectContentToShell(content);
+                        content = null;
+                    }
+                });
+
+            });
+
+            $(function () {
+                app.run('#/');
+            });
+
+        });
+
+        // Avoid `console` errors in browsers that lack a console.
+        (function () {
+            var method;
+            var noop = function () { };
+            var methods = [
+                'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+                'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+                'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+                'timeStamp', 'trace', 'warn'
+            ];
+            var length = methods.length;
+            var console = (window.console = window.console || {});
+
+            while (length--) {
+                method = methods[length];
+
+                // Only stub undefined methods.
+                if (!console[method]) {
+                    console[method] = noop;
+                }
+            }
+        }());
+    </script>
+</body>
+</html>
