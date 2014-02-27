@@ -7,7 +7,7 @@ function InjectContentToShell(content) {
 
 $(document).ready(function () {
 
-    var app = $.sammy('#shell', function () {
+    var app = $.sammy(function () {
         var content = null;
         
         
