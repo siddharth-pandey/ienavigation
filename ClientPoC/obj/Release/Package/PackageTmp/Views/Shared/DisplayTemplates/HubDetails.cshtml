@@ -1,0 +1,31 @@
+﻿@using System.Diagnostics
+@model ClientPoC.Models.HubDetails
+
+
+@if (Model != null)
+{
+    //if (Model.ShowEdit)
+    //{
+    <div>
+        <form id="@Model.HubId.Replace("/", "")" method="POST" style="display: inline-block;">
+            <div data-view-type="hubdetails" data-hub-id="@Model.HubId" data-requestaddress="@Url.Action("Summary", "Home")" style="display: inline-block; width: @(Model.LayoutWidthTemp)px; height: @(Model.LayoutHeightTemp)px;">
+                <div class="loaderwrapper">
+                    <img src="../../../Content/Images/ajax-loader.gif" alt="" class="loaderimg" />
+                </div>
+                <input type="hidden" value="@Model.HubId" name="HubId" />
+                <input type="hidden" value="@Model.LayoutWidth" name="LayoutWidth" />
+                <input type="hidden" value="@Model.LayoutHeight" name="LayoutHeight" />
+
+                @*@Html.HiddenFor(m => m.HubId)
+                    @Html.HiddenFor(m => m.LayoutHeight)
+                    @Html.HiddenFor(m => m.LayoutHeightTemp)
+                    @Html.HiddenFor(m => m.LayoutWidth)
+                    @Html.HiddenFor(m => m.LayoutWidthTemp)
+                    @Html.HiddenFor(m => m.ShowEdit)
+                    @Html.HiddenFor(m => m.XTile)
+                    @Html.HiddenFor(m => m.YTile)*@
+            </div>
+        </form>
+    </div>
+    //}
+}

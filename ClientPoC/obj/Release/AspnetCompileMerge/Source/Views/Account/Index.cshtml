@@ -1,0 +1,19 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts
+{
+    <script>
+        var options = {
+            url: "/Account/Login",
+            type: "GET",
+            dataType: "html"
+        };
+
+        History.pushState({ WasPushStateTriggered: true, options: options }, "Login Page", "/Account/Login");
+
+   </script>
+}
+

@@ -1,0 +1,27 @@
+﻿@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+}
+
+<script>
+    $(function () {
+
+        var returnUrl = "@(ViewBag.ReturnUrl)";
+        //History.Adapter.trigger(window, 'statechange');
+        var options = {
+            url: "/Account/Login" + returnUrl,
+            type: "GET",
+            dataType: "html"
+        };
+
+        History.pushState({ options: options }, "Login Page", "/Account/Login");
+
+    });
+
+</script>

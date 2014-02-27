@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls>
+  <type name="HubLayout" value="70F9D702-1DE3-42F9-8AFC-0D92C43FF7BB" />
+  <type name="HubLayoutContainer" value="70F9D702-1DE3-42F9-8AFC-0D92C43FF7BE" />
+  <type name="ImageBox" value="3DFD8F22-10A6-4D6F-A328-CF39B05D22A1"/>
+  <type name="SimpleLabel" value="BE9EA541-DEE8-4073-B30D-BECFFB84360D"/>
+  <type name="SingleLineTextBox" value="644DD3DA-32C3-47FF-9D4D-038AA9A6D0BF"/>
+  <type name="FixedContainer" value="479254E6-92C0-41C8-8CDB-CB0E1B147344" />
+</controls>
