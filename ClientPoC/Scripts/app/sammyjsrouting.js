@@ -108,7 +108,7 @@ $(document).ready(function () {
         });
 
         this.post('#/summaryview', function (context) {
-	alert(“summaryview”);
+	console.log(“summaryview”);
             var summaryViewReference = this.params['SummaryViewReference'],
                 formId = summaryViewReference.replace('/', ''),
                 //detailsViewReference = instance.find('#DetailViewId').val(),
