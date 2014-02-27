@@ -1,4 +1,4 @@
-﻿@model ClientPoC.ViewModels.DefaultControlsViewModel
+@model ClientPoC.ViewModels.DefaultControlsViewModel
 
 @{
     //if (Request.IsAjaxRequest())
@@ -21,7 +21,7 @@
     }
 </div>
 
-@*@for (int i = 0; i < 5; i++)
+@for (int i = 0; i < 5; i++)
 {
     var random = new Random();
     var form = @random.Next();
@@ -47,4 +47,4 @@
             $(this).closest('form').submit();
         });
     });
-</script>*@
+</script>
