@@ -1,0 +1,123 @@
+﻿@using System.Web.UI.WebControls
+@using ClientPoC.Controllers
+@model ClientPoC.ViewModels.StandardControls.HubLayoutContainerViewModel
+           
+@{
+    Layout = null;
+}
+
+@if (Model != null)
+{
+    if (Model.IsAsyncEnabled)
+    {
+        @*<form id="@Model.InstanceId" action="@Url.Action("Summary", "Home")">*@
+        <div data-control-type="HubLayoutContainer" style="position: absolute; left: @(Model.Left)px; top: @(Model.Top)px">
+
+            @Html.HiddenFor(m => m.AllowFlow)
+            @Html.HiddenFor(m => m.ComponentName)
+            @Html.HiddenFor(m => m.ContainerHeight)
+            @Html.HiddenFor(m => m.ContainerWidth)
+            @Html.HiddenFor(m => m.ContainerHeight)
+            @Html.HiddenFor(m => m.ControlId)
+            @Html.HiddenFor(m => m.Deleted)
+            @Html.HiddenFor(m => m.Etag)
+            @Html.HiddenFor(m => m.Height)
+            @Html.HiddenFor(m => m.HubDetailsStr)
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.InstanceId)
+            @Html.HiddenFor(m => m.IsContainer)
+            @Html.HiddenFor(m => m.IsEnabled)
+            @Html.HiddenFor(m => m.IsMandatory)
+            @Html.HiddenFor(m => m.IsNewObject)
+            @Html.HiddenFor(m => m.IsVisible)
+            @Html.HiddenFor(m => m.LastUpdated)
+            @Html.HiddenFor(m => m.Left)
+            @Html.HiddenFor(m => m.LinkedData)
+            @Html.HiddenFor(m => m.LocalProperty)
+            @Html.HiddenFor(m => m.ParentId)
+            @Html.HiddenFor(m => m.Path)
+            @Html.HiddenFor(m => m.PropertyString)
+            @Html.HiddenFor(m => m.RevisionNumber)
+            @Html.HiddenFor(m => m.Top)
+            @Html.HiddenFor(m => m.Type)
+            @Html.HiddenFor(m => m.UseFullWidth)
+            @Html.HiddenFor(m => m.Width)
+            @Html.HiddenFor(m => m.ZIndex)
+
+            @if (Model.HubDetails != null && Model.HubDetails.Count > 0)
+            {
+                for (int i = 0; i < Model.HubDetails.Count; i++)
+                {
+                    var model = Model.HubDetails[i];
+                    @Html.Partial("DisplayTemplates/HubDetails", model)
+
+                    @*if (hubDetail.ShowEdit)
+                        {
+                            <form id="@Model.HubDetails[i].HubId.Replace("/", "")" method="POST" style="display: inline-block;">
+                                <div data-view-type="detailsview" data-hub-id="@hubDetail.HubId" data-summaryview-requestaddress="@Url.Action("Summary", "Home")" style="display: inline-block; width: @(hubDetail.LayoutWidthTemp)px; height: @(hubDetail.LayoutHeightTemp)px;">
+                                    <div class="loaderwrapper">
+                                        <img src="../../../Content/Images/ajax-loader.gif" alt="" class="loaderimg" />
+                                    </div>
+                                    @Html.HiddenFor(m => m.HubDetails[i].CanEdit)
+                                    @Html.HiddenFor(m => m.HubDetails[i].HubId)
+                                    @Html.HiddenFor(m => m.HubDetails[i].LayoutHeight)
+                                    @Html.HiddenFor(m => m.HubDetails[i].LayoutHeightTemp)
+                                    @Html.HiddenFor(m => m.HubDetails[i].LayoutWidth)
+                                    @Html.HiddenFor(m => m.HubDetails[i].LayoutWidthTemp)
+                                    @Html.HiddenFor(m => m.HubDetails[i].ShowEdit)
+                                    @Html.HiddenFor(m => m.HubDetails[i].XTile)
+                                    @Html.HiddenFor(m => m.HubDetails[i].YTile)
+                                </div>
+                            </form>
+                        }*@
+                }
+            }
+        </div>
+        @*</form>*@
+    }
+}
+
+
+@*<span class="glyphicon glyphicon-repeat"></span>*@
+
+    <script>
+       $(document).ready(function() {
+           console.log($('div[data-view-type="hubdetails"]').length);
+       });
+         
+       $('div[data-view-type="hubdetails"]').each(function() {
+            var hubId = $(this).data('hub-id'),
+                url = $(this).data('requestaddress'),
+                formId = $(this).parent('form').prop('id');
+            GetSummaryView(url, hubId, formId);
+
+        });
+
+
+        function GetSummaryView(url, hubId, formId) {
+            var dataToPost = $('form#' + formId).serialize();
+            console.log(dataToPost);
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'html',
+                data: dataToPost,
+                async: true,
+            }).success(function(response, status, xhr) {
+                var ct = xhr.getResponseHeader("content-type") || "";
+                if (ct.indexOf('html') > -1) {
+                    // returned result is of type html, so act accordingly
+                    var detailsViewInstance = $('div[data-hub-id="' + hubId + '"]');
+                    detailsViewInstance.find('div.loaderwrapp').hide();
+                    detailsViewInstance.html(response);
+                } else if (ct.indexOf('json') > -1) {
+                    // returned result is of type json, so act accordingly
+                }
+            }).fail(function(e) {
+                console.log(e);
+            });
+        }
+
+    </script>
+  

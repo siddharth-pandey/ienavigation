@@ -1,0 +1,7 @@
+﻿@model ClientPoC.ViewModels.StandardControls.SimpleLabelViewModel
+
+@Html.Label(Model.TextValue, 
+new { id= Model.ControlId, style = string.Format("background: transparent; border: none; position: absolute;color: {0};font-size: {1}px; font-weight: {2}px; text-align: {3}; width: {4}px; height: {5}px; left: {6}px; top:{7}px; z-index: {8}",
+    Model.TextColour, Model.SizeOfFont, Model.FontWeightValue, "left" , Model.Width, Model.Height, Model.Left, Model.Top, Model.ZIndex)})
+
+@Html.HiddenFor(m => m.Type)
