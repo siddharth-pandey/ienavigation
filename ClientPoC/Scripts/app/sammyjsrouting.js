@@ -1,4 +1,4 @@
-﻿function InjectContentToShell(content) {
+function InjectContentToShell(content) {
     $('#shell').fadeOut(50, function () {
         $(this).empty().append(content);
     }).fadeIn(30);
@@ -108,7 +108,7 @@ $(document).ready(function () {
         });
 
         this.post('#/summaryview', function (context) {
-
+	alert(“summaryview”);
             var summaryViewReference = this.params['SummaryViewReference'],
                 formId = summaryViewReference.replace('/', ''),
                 //detailsViewReference = instance.find('#DetailViewId').val(),
