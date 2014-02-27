@@ -1,8 +1,0 @@
-﻿@model ClientPoC.ViewModels.StandardControls.ImageBoxViewModel
-
-<figure>
-    @Html.HiddenFor(m => m.Type)
-    <img id="myimg1" src="@Model.ImageData" alt="@Model.ImageName" style="position: absolute; top:@(string.Format("{0}px", Model.Top)); left:@(string.Format("{0}px", Model.Left)); width: @(string.Format("{0}px;", Model.Width)); min-width: @(string.Format("{0}px;", Model.MinimumWidth)); height: @(string.Format("{0}px;", Model.Height)); min-height: @(string.Format("{0}px;", Model.MinimumHeight));vertical-align: @(string.Format("{0}", Model.VContentAlignment)); horiz-align: @(string.Format("{0}", Model.HContentAlignment)); align: @(string.Format("{0}", Model.Alignment)); z-index: @(string.Format("{0}", Model.ZIndex));">
-    <span data-componentname="@Model.ComponentName" data-controlid="@Model.ControlId" data-height="@Model.Height"></span>
-</figure>         
-

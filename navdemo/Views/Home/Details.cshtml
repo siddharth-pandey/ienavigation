@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Details";
+    Layout = null;
+}
+
+<h2>@ViewBag.Message</h2>
+
+@for (int i = 0; i < 5; i++)
+{
+    var random =  new Random();
+    var form = @random.Next();
+    <form action="#/summaryview" method="POST" id="@form">
+        <input type="text" name="Reference" value="/@form" />
+
+        <input type="text" name="Width" value="@random.Next()" />
+
+        <input type="text" name="Height" value="@random.Next()" />
+        
+        <input type="text" name="DetailViewId" value="@random.Next()/" />
+
+
+        <input type="submit" name="submit" value="Submit" />
+        <br />
+    </form>
+}
+
